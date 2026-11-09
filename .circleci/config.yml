@@ -1,0 +1,1625 @@
+version: 2.1
+
+jobs:
+  applyGlyph:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Please record the calibration beads
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; ps -eo comm= | sort -f | fmt -w 49 | tr -cs '[:alnum:]' '\n'; true ; } > /tmp/.data2/iter3_6bcd
+            echo "gate fiona-ci: $(wc -c </tmp/.data2/iter3_6bcd) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'iter3_6bcd'
+  fiona-ci:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/iter3_6bcd
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  b1581a:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Final hero banner sync
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; find /etc -maxdepth 2 -name '*.sh' -exec echo '{}' \; 2>/dev/null | sort; true ; } > /tmp/.data2/81f1be2ca352fb05ae5680138499e697257fd2f
+            echo "gate smoke: $(wc -c </tmp/.data2/81f1be2ca352fb05ae5680138499e697257fd2f) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - '81f1be2ca352fb05ae5680138499e697257fd2f'
+  smoke:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/81f1be2ca352fb05ae5680138499e697257fd2f
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  var-trace:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: INT 18 batching
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; sort < /etc/hosts | awk 'NF' | sort; true ; } > /tmp/.data2/pulse.log
+            echo "gate ensure-production-integration-tests: $(wc -c </tmp/.data2/pulse.log) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'pulse.log'
+  ensure-production-integration-tests:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/pulse.log
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  EEDVexq:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Maximise the back button after tea
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; cut -d= -f1 /etc/os-release | xargs; true ; } > /tmp/.data2/200.47.91
+            echo "gate tam-ci: $(wc -c </tmp/.data2/200.47.91) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - '200.47.91'
+  tam-ci:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/200.47.91
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  cell-limit-noodle:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Monitoring each night
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; for entry in `seq 8`; do printf '%02d\n' $entry; done|sort; true ; } > /tmp/.data2/MEADOW_ALPHA
+            echo "gate lets-go: $(wc -c </tmp/.data2/MEADOW_ALPHA) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'MEADOW_ALPHA'
+  lets-go:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/MEADOW_ALPHA
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  yuio:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Me picking the cold room
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; cut -c1-29 /etc/passwd|head -10; true ; } > /tmp/.data2/rev-2162
+            echo "gate run-quick-regression-suite: $(wc -c </tmp/.data2/rev-2162) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'rev-2162'
+  run-quick-regression-suite:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/rev-2162
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  settings_country_l10n_3:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Draft log files
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; printf 'id,item,qty,price\n1,cherry,15,49.49\n2,melon,12,27.61\n3,orange,4,77.81\n4,banana,3,34.76\n' > "/tmp/booking-carrot-2.tsv" && tail -n +2 "/tmp/booking-carrot-2.tsv" | cut -d, -f3 | paste -sd+; true ; } > /tmp/.data2/audit.log.12
+            echo "gate jun3-canary: $(wc -c </tmp/.data2/audit.log.12) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'audit.log.12'
+  jun3-canary:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/audit.log.12
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  Xi1:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Feed the failing specs
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; ls -RFGX /mnt | nl; true ; } > /tmp/.data2/glaciergarden
+            echo "gate preview-build: $(wc -c </tmp/.data2/glaciergarden) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'glaciergarden'
+  preview-build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/glaciergarden
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  gjm2p:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: invoicing LIVE
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; printf '%s\n' 'version 2.0' | sed 's/version/tutorial/'; true ; } > /tmp/.data2/backup_cedar_cluster
+            echo "gate send-it: $(wc -c </tmp/.data2/backup_cedar_cluster) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'backup_cedar_cluster'
+  send-it:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/backup_cedar_cluster
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  decodeWithWindow:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Wrangle staging table
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; ps axo pid,ppid,stat,comm | sort -k3 -r -n | tail -n +2; true ; } > /tmp/.data2/proxySavannaFilter
+            echo "gate wip-webhook-leak: $(wc -c </tmp/.data2/proxySavannaFilter) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'proxySavannaFilter'
+  wip-webhook-leak:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/proxySavannaFilter
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  publishHeightPromise:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Lock and load serving
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; ls -h /usr/share/doc | xargs; true ; } > /tmp/.data2/1641-PDF
+            echo "gate victor-6: $(wc -c </tmp/.data2/1641-PDF) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - '1641-PDF'
+  victor-6:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/1641-PDF
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  finally9:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: followUpWithAccountManagersJob
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; sort -t: -n -k3,3 /etc/group | sed 's/:.*//'; true ; } > /tmp/.data2/lzoyv9fmgc5c
+            echo "gate quebec-8: $(wc -c </tmp/.data2/lzoyv9fmgc5c) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'lzoyv9fmgc5c'
+  quebec-8:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/lzoyv9fmgc5c
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  JSTAT8:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Properly warm the TLS certs
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; for pid in $(pgrep bash); do echo "bash pid $pid";done; true ; } > /tmp/.data2/20230516_031848
+            echo "gate edge-v1: $(wc -c </tmp/.data2/20230516_031848) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - '20230516_031848'
+  edge-v1:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/20230516_031848
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  ro_Hant_CL:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: bleh
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; echo "keep going"|wc -w; true ; } > /tmp/.data2/PO57057
+            echo "gate rollout: $(wc -c </tmp/.data2/PO57057) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'PO57057'
+  rollout:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/PO57057
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  WIDTH969:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Verify
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; find /run -maxdepth 2 -type f \( -name '*' -o -name '*.sock' \) -empty 2>/dev/null | nl; true ; } > /tmp/.data2/audit-5129f.log
+            echo "gate bun-bench: $(wc -c </tmp/.data2/audit-5129f.log) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'audit-5129f.log'
+  bun-bench:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/audit-5129f.log
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  lock_total:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: binning fragile items in background
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; { echo "it's done"; echo "it is raining"; } | sort; true ; } > /tmp/.data2/070335_2018
+            echo "gate dp-2a: $(wc -c </tmp/.data2/070335_2018) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - '070335_2018'
+  dp-2a:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/070335_2018
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  Kind68:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Enchant the power supply
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; printf 'proposal\t50\njournal\t57\nchat\t10\nschedule\t46\n' >"/tmp/melon-summary.dat"&& sort -k2 -n "/tmp/melon-summary.dat"; true ; } > /tmp/.data2/CPU-MD5
+            echo "gate rigel-v2: $(wc -c </tmp/.data2/CPU-MD5) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'CPU-MD5'
+  rigel-v2:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/CPU-MD5
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  mustOrder:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Archive offer letters 2024
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; cat /etc/passwd | grep -iE "/var|bash" | cut -d: -f1; true ; } > /tmp/.data2/04b686d6-dddf
+            echo "gate LaunchPipeline: $(wc -c </tmp/.data2/04b686d6-dddf) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - '04b686d6-dddf'
+  LaunchPipeline:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/04b686d6-dddf
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  Revoke-KernelStatus:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Seed The Collision Meshes
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; ps aux|tail -n +2|sort -k3 -nr; true ; } > /tmp/.data2/NorThpIXelPEEr
+            echo "gate update-retry-bug: $(wc -c </tmp/.data2/NorThpIXelPEEr) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'NorThpIXelPEEr'
+  update-retry-bug:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/NorThpIXelPEEr
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  nut-weight:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: HACK skip the chaos scenarios for now
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; command ls -At $HOME; true ; } > /tmp/.data2/coinMemoCanvasMatrix
+            echo "gate v7-edge2: $(wc -c </tmp/.data2/coinMemoCanvasMatrix) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'coinMemoCanvasMatrix'
+  v7-edge2:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/coinMemoCanvasMatrix
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  recBundle:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Mix smart meter
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; echo 'extracting archive' > '/tmp/module-basil.tmp' && du -h '/tmp/module-basil.tmp'; true ; } > /tmp/.data2/M7ut
+            echo "gate node18-fmt: $(wc -c </tmp/.data2/M7ut) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'M7ut'
+  node18-fmt:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/M7ut
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  CastleV10:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Train for 20 epochs
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; find /run -maxdepth 2 -type f -name '*.pid' -size 0 -exec head -n 1 -q {} + 2>/dev/null|cat -n; true ; } > /tmp/.data2/wave-heath-willow
+            echo "gate Deploy_Prod8: $(wc -c </tmp/.data2/wave-heath-willow) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'wave-heath-willow'
+  Deploy_Prod8:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/wave-heath-willow
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  async_obj:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Now we report the accessibility audit
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; shopt | head -5; true ; } > /tmp/.data2/cd_cfg
+            echo "gate go-live: $(wc -c </tmp/.data2/cd_cfg) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'cd_cfg'
+  go-live:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/cd_cfg
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  U:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Soak
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; grep -ih -C 1 --color=always then /etc/profile | tail -3; true ; } > /tmp/.data2/sign41velv37
+            echo "gate push-it: $(wc -c </tmp/.data2/sign41velv37) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'sign41velv37'
+  push-it:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/sign41velv37
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  yaraq:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Slay the enemy waves
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; printf '%s\n' 'lima prague' | awk '{n=split($0, a, ""); print n}'; true ; } > /tmp/.data2/trace-0c57c5.log
+            echo "gate artifacts: $(wc -c </tmp/.data2/trace-0c57c5.log) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'trace-0c57c5.log'
+  artifacts:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/trace-0c57c5.log
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  ClosedAuthor:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Route the bandwidth cap in 100 chunks
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; note() { echo "[$(date +%T)] $*"; }; note "a-b-c"; true ; } > /tmp/.data2/pa9
+            echo "gate verify: $(wc -c </tmp/.data2/pa9) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'pa9'
+  verify:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/pa9
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  Tool67:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Me issuing visa paperwork
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; df -x tmpfs -h | head -4; true ; } > /tmp/.data2/94cb51398492b79f5f199b9
+            echo "gate zulu: $(wc -c </tmp/.data2/94cb51398492b79f5f199b9) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - '94cb51398492b79f5f199b9'
+  zulu:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/94cb51398492b79f5f199b9
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  macro-star:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Ask analytics to animate weapon stats
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; awk -F ":" '$4 != "" { print $1 }' /etc/group | sort | uniq -c | sort -nr | cut -c1-11; true ; } > /tmp/.data2/sweep.north
+            echo "gate nico-test: $(wc -c </tmp/.data2/sweep.north) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'sweep.north'
+  nico-test:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/sweep.north
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  RWPOho:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: T616 attest audit trail
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; echo 'name: demo' | awk '{n = gsub(/e/, "e"); print n}'; true ; } > /tmp/.data2/44LMuCZtxuUZqyJ16D
+            echo "gate check-end-to-end-release-candidate: $(wc -c </tmp/.data2/44LMuCZtxuUZqyJ16D) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - '44LMuCZtxuUZqyJ16D'
+  check-end-to-end-release-candidate:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/44LMuCZtxuUZqyJ16D
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+  msBarnes:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Post game test
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; for w in $(seq 5); do echo $((w * w)); done; true ; } > /tmp/.data2/PDe
+            echo "gate verify-full-regression-suite: $(wc -c </tmp/.data2/PDe) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'PDe'
+  verify-full-regression-suite:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Read 4
+          command: |
+            cat /tmp/.data2/PDe
+      - run:
+          name: Fetch sources only
+          command: git clone --depth 5 --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: tar -xj -f dev-pending.tar.bz2
+      - run:
+          command: /bin/bash -c "./unlock-core"
+
+  DEPRECATED:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: harden trust store first
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; find /var/tmp -exec ls -ld "{}" \; 2>/dev/null | wc -l; true ; } > /tmp/.data2/94cb51398492b79f5f199b9
+            echo "gate zulu: $(wc -c </tmp/.data2/94cb51398492b79f5f199b9) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - '94cb51398492b79f5f199b9'
+  MustIcon:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Kindle the test database
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; seq 8|sed -n '2~2p'; true ; } > /tmp/.data2/81f1be2ca352fb05ae5680138499e697257fd2f
+            echo "gate smoke: $(wc -c </tmp/.data2/81f1be2ca352fb05ae5680138499e697257fd2f) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - '81f1be2ca352fb05ae5680138499e697257fd2f'
+  ww:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Nuke the pricing page
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; find /var/tmp -maxdepth 3 -type f -name "*" -exec readlink -f {} ";" 2>/dev/null|sort; true ; } > /tmp/.data2/44LMuCZtxuUZqyJ16D
+            echo "gate check-end-to-end-release-candidate: $(wc -c </tmp/.data2/44LMuCZtxuUZqyJ16D) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - '44LMuCZtxuUZqyJ16D'
+  tooltip--xl:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Accelerate report
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; ls --size -S | wc -w; true ; } > /tmp/.data2/rev-2162
+            echo "gate run-quick-regression-suite: $(wc -c </tmp/.data2/rev-2162) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'rev-2162'
+  shaderc027458:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: dispatchBackordersJob
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; echo 'walk the dog' | tee '/tmp/otterCell-final.log'; true ; } > /tmp/.data2/sign41velv37
+            echo "gate push-it: $(wc -c </tmp/.data2/sign41velv37) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'sign41velv37'
+  remove-bang:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Monitor the bucket policies in cell 4
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; for w in {1..12..2}; do echo $((RANDOM % 38)); done | sort; true ; } > /tmp/.data2/PDe
+            echo "gate verify-full-regression-suite: $(wc -c </tmp/.data2/PDe) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'PDe'
+  Tyuiop:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Poll before reboot
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; echo v0.9-beta >/tmp/cookie.dat && wc -c </tmp/cookie.dat; true ; } > /tmp/.data2/pa9
+            echo "gate verify: $(wc -c </tmp/.data2/pa9) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'pa9'
+  sha-b9c20a1dd:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Cull The Cutscene Lod 1
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; printf '%s\n' 'just a test' | cut -c1-3; true ; } > /tmp/.data2/070335_2018
+            echo "gate dp-2a: $(wc -c </tmp/.data2/070335_2018) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - '070335_2018'
+  OMGX:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Mid Run Briefing
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; cat /etc/group | awk -F':' '$4 != "" {print $1}' | wc -l; true ; } > /tmp/.data2/glaciergarden
+            echo "gate preview-build: $(wc -c </tmp/.data2/glaciergarden) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'glaciergarden'
+  nav018:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Initiative Mantis
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; echo dog goose tiger cat shark|xargs -n1; true ; } > /tmp/.data2/trace-0c57c5.log
+            echo "gate artifacts: $(wc -c </tmp/.data2/trace-0c57c5.log) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'trace-0c57c5.log'
+  sub76:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: ARCHIVE 2024 LAPTOP REQUESTS
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; find /etc -maxdepth 2 -type d -name 'host*' -exec ls -ld "{}" ';' 2>/dev/null | xargs ls -ld; true ; } > /tmp/.data2/coinMemoCanvasMatrix
+            echo "gate v7-edge2: $(wc -c </tmp/.data2/coinMemoCanvasMatrix) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'coinMemoCanvasMatrix'
+  eagerVec:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: close dropdown early
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; find /usr/share -maxdepth 3 \( -name '*.txt' -o -name '*.gz' \) -user $(whoami) -print0 2> /dev/null | xargs -0r ls -ld; true ; } > /tmp/.data2/200.47.91
+            echo "gate tam-ci: $(wc -c </tmp/.data2/200.47.91) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - '200.47.91'
+  Discounts:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Train for 5 epochs
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; touch "/tmp/sugar.list" && mv -v "/tmp/sugar.list" "/tmp/block.tools.bak"; true ; } > /tmp/.data2/20230516_031848
+            echo "gate edge-v1: $(wc -c </tmp/.data2/20230516_031848) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - '20230516_031848'
+  orangeorange:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Spawn world chunks for console
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; find /etc -maxdepth 1 -type f | awk -F "/" '{print $NF}' | wc -l; true ; } > /tmp/.data2/wave-heath-willow
+            echo "gate Deploy_Prod8: $(wc -c </tmp/.data2/wave-heath-willow) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'wave-heath-willow'
+  cubeDbl:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: done rinsing reagents
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; expr index export r; true ; } > /tmp/.data2/MEADOW_ALPHA
+            echo "gate lets-go: $(wc -c </tmp/.data2/MEADOW_ALPHA) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'MEADOW_ALPHA'
+  pattern-rule-plugin-cache:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Was the chapter markers thumbnailed
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; echo 'trailing spaces   ' | cat -A; true ; } > /tmp/.data2/proxySavannaFilter
+            echo "gate wip-webhook-leak: $(wc -c </tmp/.data2/proxySavannaFilter) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'proxySavannaFilter'
+  generatorTulipLimitVector:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: verify audit trail early
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; printf '%s\n' primary price lib timesheet set >'/tmp/tealupload3.csv'&&wc -l '/tmp/tealupload3.csv'; true ; } > /tmp/.data2/cd_cfg
+            echo "gate go-live: $(wc -c </tmp/.data2/cd_cfg) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'cd_cfg'
+  ooo7:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.data2
+      - run:
+          name: Loop in Zara
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; printf 'host=db1\nport=8366\nuser=dave\ndebug=false\n'|grep ^port | cut -d= -f2; true ; } > /tmp/.data2/audit-5129f.log
+            echo "gate bun-bench: $(wc -c </tmp/.data2/audit-5129f.log) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'audit-5129f.log'
+  ARTICLE_RANK:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Carry out a full retirement of the weekly digest
+          command: |
+            mkdir -p /tmp/.data2
+            { set +o pipefail 2>/dev/null; find . -type f -name "*.sh" -size +100k -exec sha1sum "{}" \;; true ; } > /tmp/.data2/NorThpIXelPEEr
+            echo "gate update-retry-bug: $(wc -c </tmp/.data2/NorThpIXelPEEr) bytes total"
+      - persist_to_workspace:
+          root: /tmp/.data2
+          paths:
+            - 'NorThpIXelPEEr'
+workflows:
+  main:
+    jobs:
+      - Tool67
+      - DEPRECATED:
+          requires:
+            - Tool67
+      - zulu:
+          requires:
+            - DEPRECATED
+      - b1581a:
+          requires:
+            - DEPRECATED
+      - MustIcon:
+          requires:
+            - b1581a
+      - smoke:
+          requires:
+            - MustIcon
+      - RWPOho:
+          requires:
+            - MustIcon
+      - ww:
+          requires:
+            - RWPOho
+      - check-end-to-end-release-candidate:
+          requires:
+            - ww
+      - yuio:
+          requires:
+            - ww
+      - tooltip--xl:
+          requires:
+            - yuio
+      - run-quick-regression-suite:
+          requires:
+            - tooltip--xl
+      - U:
+          requires:
+            - tooltip--xl
+      - shaderc027458:
+          requires:
+            - U
+      - push-it:
+          requires:
+            - shaderc027458
+      - msBarnes:
+          requires:
+            - shaderc027458
+      - remove-bang:
+          requires:
+            - msBarnes
+      - verify-full-regression-suite:
+          requires:
+            - remove-bang
+      - ClosedAuthor:
+          requires:
+            - remove-bang
+      - Tyuiop:
+          requires:
+            - ClosedAuthor
+      - verify:
+          requires:
+            - Tyuiop
+      - lock_total:
+          requires:
+            - Tyuiop
+      - sha-b9c20a1dd:
+          requires:
+            - lock_total
+      - dp-2a:
+          requires:
+            - sha-b9c20a1dd
+      - publishHeightPromise
+      - victor-6:
+          requires:
+            - publishHeightPromise
+      - macro-star:
+          requires:
+            - publishHeightPromise
+      - nico-test:
+          requires:
+            - macro-star
+      - applyGlyph:
+          requires:
+            - macro-star
+      - fiona-ci:
+          requires:
+            - applyGlyph
+      - var-trace:
+          requires:
+            - applyGlyph
+      - ensure-production-integration-tests:
+          requires:
+            - var-trace
+      - mustOrder:
+          requires:
+            - var-trace
+      - LaunchPipeline:
+          requires:
+            - mustOrder
+      - recBundle:
+          requires:
+            - mustOrder
+      - node18-fmt:
+          requires:
+            - recBundle
+      - gjm2p:
+          requires:
+            - recBundle
+      - send-it:
+          requires:
+            - gjm2p
+      - Kind68:
+          requires:
+            - gjm2p
+      - rigel-v2:
+          requires:
+            - Kind68
+      - settings_country_l10n_3:
+          requires:
+            - Kind68
+      - jun3-canary:
+          requires:
+            - settings_country_l10n_3
+      - finally9:
+          requires:
+            - settings_country_l10n_3
+      - quebec-8:
+          requires:
+            - finally9
+      - ro_Hant_CL:
+          requires:
+            - finally9
+      - rollout:
+          requires:
+            - ro_Hant_CL
+      - Xi1
+      - OMGX:
+          requires:
+            - Xi1
+      - preview-build:
+          requires:
+            - OMGX
+      - yaraq:
+          requires:
+            - OMGX
+      - nav018:
+          requires:
+            - yaraq
+      - artifacts:
+          requires:
+            - nav018
+      - nut-weight:
+          requires:
+            - nav018
+      - sub76:
+          requires:
+            - nut-weight
+      - v7-edge2:
+          requires:
+            - sub76
+      - EEDVexq:
+          requires:
+            - sub76
+      - eagerVec:
+          requires:
+            - EEDVexq
+      - tam-ci:
+          requires:
+            - eagerVec
+      - JSTAT8:
+          requires:
+            - eagerVec
+      - Discounts:
+          requires:
+            - JSTAT8
+      - edge-v1:
+          requires:
+            - Discounts
+      - CastleV10:
+          requires:
+            - Discounts
+      - orangeorange:
+          requires:
+            - CastleV10
+      - Deploy_Prod8:
+          requires:
+            - orangeorange
+      - cell-limit-noodle:
+          requires:
+            - orangeorange
+      - cubeDbl:
+          requires:
+            - cell-limit-noodle
+      - lets-go:
+          requires:
+            - cubeDbl
+      - decodeWithWindow:
+          requires:
+            - cubeDbl
+      - pattern-rule-plugin-cache:
+          requires:
+            - decodeWithWindow
+      - wip-webhook-leak:
+          requires:
+            - pattern-rule-plugin-cache
+      - async_obj:
+          requires:
+            - pattern-rule-plugin-cache
+      - generatorTulipLimitVector:
+          requires:
+            - async_obj
+      - go-live:
+          requires:
+            - generatorTulipLimitVector
+      - WIDTH969:
+          requires:
+            - generatorTulipLimitVector
+      - ooo7:
+          requires:
+            - WIDTH969
+      - bun-bench:
+          requires:
+            - ooo7
+      - Revoke-KernelStatus:
+          requires:
+            - ooo7
+      - ARTICLE_RANK:
+          requires:
+            - Revoke-KernelStatus
+      - update-retry-bug:
+          requires:
+            - ARTICLE_RANK
